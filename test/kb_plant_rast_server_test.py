@@ -76,14 +76,23 @@ class kb_plant_rastTest(unittest.TestCase):
         return self.__class__.ctx
 
     # NOTE: According to Python unittest naming rules test method names should start from 'test'. # noqa
-    def test_your_method(self):
-        # Prepare test objects in workspace if needed using
-        # self.getWsClient().save_objects({'workspace': self.getWsName(),
-        #                                  'objects': []})
-        #
-        # Run your method by
-        # ret = self.getImpl().your_method(self.getContext(), parameters...)
+    def test_plant_rast(self):
+        print "Testing Plant RAST"
+
+        # Copying Plant Genome
+        Test_Genome = 'Fvesca_v1.1'
+        self.getWsClient().copy_object({'from':{'workspace':'Phytozome_Genomes','name':Test_Genome},
+                                        'to':{'workspace': self.getWsName(),'name':Test_Genome}})
+
+        # Running Plant RAST
+        ret = self.getImpl().annotate_plant_transcripts(self.getContext(), {'input_ws' : self.getWsName(),
+                                                                            'input_genome' : Test_Genome })
+
+        print "Genome has "+str(ret[0]['ftrs'])+" features"
+        print "Annotation has "+str(ret[0]['fns'])+" functions"
+        print "Genome has "+str(ret[0]['hit_ftrs'])+" feature hits"
+        print "Annotation has "+str(ret[0]['hit_fns'])+" function hits"
+
         #
         # Check returned data with
         # self.assertEqual(ret[...], ...) or other unittest methods
-        pass

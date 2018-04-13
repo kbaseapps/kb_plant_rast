@@ -1,0 +1,63 @@
+# -*- coding: utf-8 -*-
+#BEGIN_HEADER
+#END_HEADER
+
+
+class kb_plant_rast:
+    '''
+    Module Name:
+    kb_plant_rast
+
+    Module Description:
+    A KBase module: kb_plant_rast
+    '''
+
+    ######## WARNING FOR GEVENT USERS ####### noqa
+    # Since asynchronous IO can lead to methods - even the same method -
+    # interrupting each other, you must be *very* careful when using global
+    # state. A method could easily clobber the state set by another while
+    # the latter method is running.
+    ######################################### noqa
+    VERSION = "0.0.1"
+    GIT_URL = "https://github.com/kbaseapps/kb_plant_rast"
+    GIT_COMMIT_HASH = "a652c0120abf90e97d0f0214f8ed4174f27b9a09"
+
+    #BEGIN_CLASS_HEADER
+    #END_CLASS_HEADER
+
+    # config contains contents of config file in a hash or None if it couldn't
+    # be found
+    def __init__(self, config):
+        #BEGIN_CONSTRUCTOR
+        #END_CONSTRUCTOR
+        pass
+
+
+    def annotate_plant_transcripts(self, ctx, params):
+        """
+        :param params: instance of unspecified object
+        :returns: instance of type "AnnotatePlantTranscriptsResults" ->
+           structure: parameter "workspace" of String, parameter "id" of
+           String, parameter "report_name" of String, parameter "report_ref"
+           of String
+        """
+        # ctx is the context object
+        # return variables are: returnVal
+        #BEGIN annotate_plant_transcripts
+        #END annotate_plant_transcripts
+
+        # At some point might do deeper type checking...
+        if not isinstance(returnVal, dict):
+            raise ValueError('Method annotate_plant_transcripts return value ' +
+                             'returnVal is not type dict as required.')
+        # return the results
+        return [returnVal]
+    def status(self, ctx):
+        #BEGIN_STATUS
+        returnVal = {'state': "OK",
+                     'message': "",
+                     'version': self.VERSION,
+                     'git_url': self.GIT_URL,
+                     'git_commit_hash': self.GIT_COMMIT_HASH}
+        #END_STATUS
+        return [returnVal]

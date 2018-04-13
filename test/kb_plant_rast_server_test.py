@@ -80,7 +80,7 @@ class kb_plant_rastTest(unittest.TestCase):
         print "Testing Plant RAST"
 
         # Copying Plant Genome
-        Test_Genome = 'Fvesca_v1.1'
+        Test_Genome = 'Fvesca_PhytozomeV11_v1.1'
         self.getWsClient().copy_object({'from':{'workspace':'Phytozome_Genomes','name':Test_Genome},
                                         'to':{'workspace': self.getWsName(),'name':Test_Genome}})
 

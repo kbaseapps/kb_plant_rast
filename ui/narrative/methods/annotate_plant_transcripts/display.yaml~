@@ -1,0 +1,50 @@
+#
+# define display information
+#
+name: Annotate Plant Transcripts
+
+tooltip: |
+    Annotating transcripts with metabolic functions
+
+screenshots: []
+
+icon: modelseed.png
+
+#
+# define a set of similar methods that might be useful to the user
+#
+suggestions:
+    apps:
+        related:
+            []
+        next:
+            []
+    methods:
+        related:
+            []
+        next:
+            []
+
+#
+# Configure the display and description of parameters
+#
+parameters :
+    input_genome :
+        ui-name : |
+            Genome 
+        short-hint : |
+            Selected genome to annotate
+        long-hint  : |
+            Selected genome to annotate with metabolic functions
+
+description : |
+    
+    <p> This is the PlantSEED v2 Annotation App</p>
+    
+publications :
+
+    -
+        display-text: |
+     
+           link: http://www.bioinformatics.babraham.ac.uk/projects/fastqc/
+    

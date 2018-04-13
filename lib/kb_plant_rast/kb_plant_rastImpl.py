@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #BEGIN_HEADER
-import os
+import os,uuid
 from KBaseReport.KBaseReportClient import KBaseReport
 from Workspace.WorkspaceClient import Workspace as workspaceService
 #END_HEADER
@@ -138,6 +138,18 @@ class kb_plant_rast:
                                                           'data' : plant_genome['data'],
                                                           'type' : "KBaseGenomes.Genome",
                                                           'meta' : plant_genome['info'][10]}]})
+
+
+        html_string=""
+        uuid_string = str(uuid.uuid4())
+        report_params = { 'objects_created' : [],
+                          'direct_html' : html_string,
+                          'workspace_name' : input['input_ws'],
+                          'report_object_name' : 'kb_plant_rast_report_' + uuid_string }
+        kbase_report_client = KBaseReport(self.callback_url, token=token)
+        report_client_output = kbase_report_client.create_extended_report(report_params)
+        output['report_name']=report_client_output['name']
+        output['report_ref']=report_client_output['ref']
 
         #END annotate_plant_transcripts
 

@@ -103,7 +103,6 @@ class kb_plant_rastTest(unittest.TestCase):
         }
 
         result = cls.gfu.fasta_gff_to_genome(input_params)
-        print result
 
     # NOTE: According to Python unittest naming rules test method names should start from 'test'. # noqa
     def test_plant_rast(self):
@@ -121,11 +120,7 @@ class kb_plant_rastTest(unittest.TestCase):
         ret = self.getImpl().annotate_plant_transcripts(self.getContext(), {'input_ws' : self.getWsName(),
                                                                             'input_genome' : self.genome })
 
-        print "Genome has "+str(ret[0]['ftrs'])+" features"
-        print "Annotation has "+str(ret[0]['fns'])+" functions"
-        print "Genome has "+str(ret[0]['hit_ftrs'])+" feature hits"
-        print "Annotation has "+str(ret[0]['hit_fns'])+" function hits"
-
-        #
-        # Check returned data with
-        # self.assertEqual(ret[...], ...) or other unittest methods
+        self.assertEqual(ret[0]['ftrs'],1028)
+        self.assertEqual(ret[0]['fns'],540)
+        self.assertEqual(ret[0]['hit_ftrs'],29)
+        self.assertEqual(ret[0]['hit_fns'],22)

@@ -4,6 +4,7 @@ import os  # noqa: F401
 import json  # noqa: F401
 import time
 import requests
+import shutil
 
 from os import environ
 try:
@@ -15,6 +16,7 @@ from pprint import pprint  # noqa: F401
 
 from biokbase.workspace.client import Workspace as workspaceService
 from kb_plant_rast.kb_plant_rastImpl import kb_plant_rast
+from GenomeFileUtil.GenomeFileUtilClient import GenomeFileUtil
 from kb_plant_rast.kb_plant_rastServer import MethodContext
 from kb_plant_rast.authclient import KBaseAuth as _KBaseAuth
 
@@ -50,6 +52,9 @@ class kb_plant_rastTest(unittest.TestCase):
         cls.serviceImpl = kb_plant_rast(cls.cfg)
         cls.scratch = cls.cfg['scratch']
         cls.callback_url = os.environ['SDK_CALLBACK_URL']
+        cls.gfu = GenomeFileUtil(cls.callback_url)
+        cls.genome = "Test_Genome"
+        cls.prepare_data()
 
     @classmethod
     def tearDownClass(cls):
@@ -75,18 +80,46 @@ class kb_plant_rastTest(unittest.TestCase):
     def getContext(self):
         return self.__class__.ctx
 
+    @classmethod
+    def prepare_data(cls):
+        cls.gff_filename = 'Test_v1.0.gene.gff3.gz'
+        cls.gff_path = os.path.join(cls.scratch, cls.gff_filename)
+        shutil.copy(os.path.join("/kb", "module", "data", cls.gff_filename), cls.gff_path)
+
+        cls.fa_filename = 'Test_v1.0.fa.gz'
+        cls.fa_path = os.path.join(cls.scratch, cls.fa_filename)
+        shutil.copy(os.path.join("/kb", "module", "data", cls.fa_filename), cls.fa_path)
+
+    def loadFakeGenome(cls):
+        
+        input_params = {
+            'fasta_file': {'path': cls.fa_path},
+            'gff_file': {'path': cls.gff_path},
+            'genome_name': cls.genome,
+            'workspace_name': cls.getWsName(),
+            'source': 'Phytozome',
+            'type': 'Reference',
+            'scientific_name': 'Populus trichocarpa'
+        }
+
+        result = cls.gfu.fasta_gff_to_genome(input_params)
+        print result
+
     # NOTE: According to Python unittest naming rules test method names should start from 'test'. # noqa
     def test_plant_rast(self):
         print "Testing Plant RAST"
 
+        #Load Fake Genome
+        self.loadFakeGenome()
+
         # Copying Plant Genome
-        Test_Genome = 'Fvesca_PhytozomeV11_v1.1'
-        self.getWsClient().copy_object({'from':{'workspace':'Phytozome_Genomes','name':Test_Genome},
-                                        'to':{'workspace': self.getWsName(),'name':Test_Genome}})
+        #Test_Genome = 'Fvesca_PhytozomeV11_v1.1'
+        #self.getWsClient().copy_object({'from':{'workspace':'Phytozome_Genomes','name':Test_Genome},
+        #                                'to':{'workspace': self.getWsName(),'name':Test_Genome}})
 
         # Running Plant RAST
         ret = self.getImpl().annotate_plant_transcripts(self.getContext(), {'input_ws' : self.getWsName(),
-                                                                            'input_genome' : Test_Genome })
+                                                                            'input_genome' : self.genome })
 
         print "Genome has "+str(ret[0]['ftrs'])+" features"
         print "Annotation has "+str(ret[0]['fns'])+" functions"

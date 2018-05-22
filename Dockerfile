@@ -19,8 +19,6 @@ COPY ./ /kb/module
 RUN mkdir -p /kb/module/work
 RUN chmod -R a+rw /kb/module
 
-RUN curl -s https://raw.githubusercontent.com/ModelSEED/PlantSEED/master/Data/PlantSEED_v2/Flat_Files/Supporting_Data_S3_Signature_Kmers.txt > /kb/module/data/functions_kmers.txt
-
 WORKDIR /kb/module
 
 RUN make all

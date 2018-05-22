@@ -120,7 +120,8 @@ class kb_plant_rastTest(unittest.TestCase):
         ret = self.getImpl().annotate_plant_transcripts(self.getContext(), {'input_ws' : self.getWsName(),
                                                                             'input_genome' : self.genome })
 
+        print ret[0]
         self.assertEqual(ret[0]['ftrs'],1028)
-        self.assertEqual(ret[0]['fns'],540)
-        self.assertEqual(ret[0]['hit_ftrs'],29)
-        self.assertEqual(ret[0]['hit_fns'],22)
+        self.assertEqual(ret[0]['fns'],512)
+        self.assertEqual(ret[0]['hit_ftrs'],37)
+        self.assertEqual(ret[0]['hit_fns'],26)

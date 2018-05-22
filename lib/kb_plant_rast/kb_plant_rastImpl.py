@@ -27,7 +27,7 @@ class kb_plant_rast:
     VERSION = "0.0.1"
     GIT_URL = "https://github.com/kbaseapps/kb_plant_rast"
     GIT_COMMIT_HASH = "a652c0120abf90e97d0f0214f8ed4174f27b9a09"
-
+    
     #BEGIN_CLASS_HEADER
     KMER_THRESHOLD = 1
     #END_CLASS_HEADER
@@ -64,7 +64,7 @@ class kb_plant_rast:
         # Retrieve kmers
         Functions = set()
         Kmers_Functions = dict()
-        for line in open('/kb/module/data/functions_kmers.txt'):
+        for line in open('/data/functions_kmers.txt'):
             line=line.strip()
             (function_string,kmers_string)=line.split('\t')
             Functions.add(function_string)
@@ -78,6 +78,10 @@ class kb_plant_rast:
         Hit_Kmers=set()
         output['short']=0
         for ftr in plant_genome['data']['features']:
+            if('protein_translation' not in ftr):
+                output['short']+=1
+                continue
+
             Seq = ftr['protein_translation']
             SeqLen = len(Seq);
             if(SeqLen < 10):
@@ -102,7 +106,7 @@ class kb_plant_rast:
             Deleted_Functions = set()
             for function in Hit_Proteins[ftr].keys():
                 N_Kmers = Hit_Proteins[ftr][function]
-                if(N_Kmers <= KMER_THRESHOLD):
+                if(N_Kmers <= self.KMER_THRESHOLD):
                     Deleted_Functions.add(function)
                 
             for function in Deleted_Functions:
@@ -163,8 +167,6 @@ class kb_plant_rast:
                                                           'type' : "KBaseGenomes.Genome",
                                                           'meta' : plant_genome['info'][10]}]})
 
-        saved_genome = "{}/{}/{}".format(save_result[0][6],save_result[0][0],save_result[0][4])
-
         html_string="<html><head><title>KBase Plant Rast Report</title></head><body>"
         html_string+="<p>The Plant Rast app has finished running.</p>"
         html_string+="<p>"+str(output['ftrs'])+" features were scanned with "+str(output['kmers'])+" signature kmers "
@@ -180,8 +182,11 @@ class kb_plant_rast:
         html_string+="<p>This result indicates that {0:.2f} of the primary metabolism curated as part ".format(fraction_plantseed)
         html_string+="of the PlantSEED project was detected in the set of features.</p></body>"
 
+        saved_genome = "{}/{}/{}".format(save_result[0][6],save_result[0][0],save_result[0][4])
+        description = "Plant genome "+plant_genome['data']['id']+" annotated with metabolic functions"
         uuid_string = str(uuid.uuid4())
-        report_params = { 'objects_created' : [saved_genome],
+        report_params = { 'objects_created' : \
+                          [{"ref":saved_genome,"description":description}],
                           'direct_html' : html_string,
                           'workspace_name' : input['input_ws'],
                           'report_object_name' : 'kb_plant_rast_report_' + uuid_string }

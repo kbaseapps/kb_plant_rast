@@ -29,6 +29,7 @@ class kb_plant_rast:
     GIT_COMMIT_HASH = "a652c0120abf90e97d0f0214f8ed4174f27b9a09"
 
     #BEGIN_CLASS_HEADER
+    KMER_THRESHOLD = 1
     #END_CLASS_HEADER
 
     # config contains contents of config file in a hash or None if it couldn't
@@ -95,14 +96,13 @@ class kb_plant_rast:
 
         #Eliminate hits that have a small number of kmers
         #Each function must have more than 1 kmer in order to be assigned
-        Kmer_Threshold = 1
         Deleted_Proteins = set()
         output['few']=0
         for ftr in Hit_Proteins.keys():
             Deleted_Functions = set()
             for function in Hit_Proteins[ftr].keys():
                 N_Kmers = Hit_Proteins[ftr][function]
-                if(N_Kmers <= Kmer_Threshold):
+                if(N_Kmers <= KMER_THRESHOLD):
                     Deleted_Functions.add(function)
                 
             for function in Deleted_Functions:
@@ -116,7 +116,7 @@ class kb_plant_rast:
         #If a function has more hits than others, it takes precendence
         #If there are more than one function with an equal number of hits, the feature is removed
         output['ambiguous']=0
-        for ftr in Hit_Proteins.keys():
+        for ftr in Hit_Proteins:
             if(len(Hit_Proteins[ftr])==1):
                 continue
             

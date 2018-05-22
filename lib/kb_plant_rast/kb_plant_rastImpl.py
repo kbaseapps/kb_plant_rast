@@ -123,7 +123,10 @@ class kb_plant_rast:
         for ftr in Hit_Proteins:
             if(len(Hit_Proteins[ftr])==1):
                 continue
-            
+
+            if(ftr in Deleted_Proteins):
+                continue
+
             Top_Hit_Functions=dict()
             for function in Hit_Proteins[ftr].keys():
                 if(Hit_Proteins[ftr][function] not in Top_Hit_Functions):

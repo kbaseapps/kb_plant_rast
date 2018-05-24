@@ -1,7 +1,7 @@
 #
 # define display information
 #
-name: Annotate Plant Transcripts
+name: Annotate Plant Transcripts with Metabolic Functions
 
 tooltip: |
     Annotating transcripts with metabolic functions

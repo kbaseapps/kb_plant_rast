@@ -175,6 +175,12 @@ class kb_plant_rast:
                 parent_feature_index[plant_genome['data']['features'][i]['id']]=i
 
         #Now, re-populate feature functions, and save genome object
+        #But, if annotating CDS, need to be able to retrieve parent feature
+        parent_feature_index = dict()
+        if(USE_CDS==1):
+            for i in range(len(plant_genome['data']['features'])):
+                parent_feature_index[plant_genome['data']['features'][i]['id']]=i
+
         for ftr in features:
             if(ftr['id'] in Hit_Proteins):
                 new_function = Hit_Proteins[ftr['id']].keys()[0]

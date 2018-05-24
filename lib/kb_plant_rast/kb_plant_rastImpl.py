@@ -61,9 +61,16 @@ class kb_plant_rast:
         
         # Retrieve plant genome
         plant_genome = self.dfu.get_objects({'object_refs': [input['input_ws']+'/'+input['input_genome']]})['data'][0]
+
+        # Force upgrade
+        if("feature_counts" in plant_genome['data']):
+            del(plant_genome['data']['feature_counts'])
+
+        USE_CDS=1
         features = plant_genome['data']['cdss']
         if(len(features)==0):
             features = plant_genome['data']['features']
+            USE_CDS=0
             if(len(features)==0):
                 raise Exception("The genome does not contain any CDSs or features!")
 
@@ -161,12 +168,19 @@ class kb_plant_rast:
         output['hit_ftrs']=len(Hit_Proteins)
         output['hit_fns']=len(Hit_Functions)
 
+        #But, if annotating CDS, need to be able to retrieve parent feature
+        parent_feature_index = dict()
+        if(USE_CDS==1):
+            for i in range(len(plant_genome['data']['features'])):
+                parent_feature_index[plant_genome['data']['features'][i]['id']]=i
+
         #Now, re-populate feature functions, and save genome object
         for ftr in features:
             if(ftr['id'] in Hit_Proteins):
-                if('function' in ftr):
-                    old_function = ftr['function']
-                ftr['function'] = Hit_Proteins[ftr['id']].keys()[0]
+                new_function = Hit_Proteins[ftr['id']].keys()[0]
+                ftr['function'] = new_function
+                if(USE_CDS==1):
+                    plant_genome['data']['features'][parent_feature_index[ftr['parent_gene']]]['function']=new_function
         
         if('output_genome' not in input):
             input['output_genome']=input['input_genome']

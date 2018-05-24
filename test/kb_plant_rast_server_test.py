@@ -112,16 +112,17 @@ class kb_plant_rastTest(unittest.TestCase):
         self.loadFakeGenome()
 
         # Copying Plant Genome
-        #Test_Genome = 'Fvesca_PhytozomeV11_v1.1'
-        #self.getWsClient().copy_object({'from':{'workspace':'Phytozome_Genomes','name':Test_Genome},
-        #                                'to':{'workspace': self.getWsName(),'name':Test_Genome}})
+        # Test_Genome = 'Fvesca_PhytozomeV11_v1.1'
+        # Test_Genome = 'Athaliana_TAIR10'
+        # self.getWsClient().copy_object({'from':{'workspace':'Phytozome_Genomes','name' : Test_Genome},
+        #                                'to':{'workspace': self.getWsName(),'name' : self.genome}})
 
         # Running Plant RAST
         ret = self.getImpl().annotate_plant_transcripts(self.getContext(), {'input_ws' : self.getWsName(),
                                                                             'input_genome' : self.genome })
 
         print ret[0]
-        self.assertEqual(ret[0]['ftrs'],1028)
+        self.assertEqual(ret[0]['ftrs'],1881)
         self.assertEqual(ret[0]['fns'],512)
-        self.assertEqual(ret[0]['hit_ftrs'],37)
-        self.assertEqual(ret[0]['hit_fns'],26)
+        self.assertEqual(ret[0]['hit_ftrs'],79)
+        self.assertEqual(ret[0]['hit_fns'],27)

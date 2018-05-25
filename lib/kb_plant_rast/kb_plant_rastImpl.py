@@ -4,6 +4,7 @@ import os
 import uuid
 
 from KBaseReport.KBaseReportClient import KBaseReport
+from GenomeFileUtil.GenomeFileUtilClient import GenomeFileUtil
 from DataFileUtil.DataFileUtilClient import DataFileUtil
 from Workspace.WorkspaceClient import Workspace as workspaceService
 #END_HEADER
@@ -41,6 +42,7 @@ class kb_plant_rast:
         self.scratch = os.path.abspath(config['scratch'])
         self.callback_url = os.environ['SDK_CALLBACK_URL']
         self.dfu = DataFileUtil(self.callback_url)
+        self.gfu = GenomeFileUtil(self.callback_url)
         #END_CONSTRUCTOR
         pass
 
@@ -59,7 +61,20 @@ class kb_plant_rast:
         
         # Retrieve plant genome
         plant_genome = self.dfu.get_objects({'object_refs': [input['input_ws']+'/'+input['input_genome']]})['data'][0]
-        output = {'ftrs': len(plant_genome['data']['features'])}
+
+        # Force upgrade
+        if("feature_counts" in plant_genome['data']):
+            del(plant_genome['data']['feature_counts'])
+
+        use_cds=1
+        features = plant_genome['data']['cdss']
+        if(len(features)==0):
+            features = plant_genome['data']['features']
+            use_cds=0
+            if(len(features)==0):
+                raise Exception("The genome does not contain any CDSs or features!")
+
+        output = {'ftrs': len(features)}
 
         # Retrieve kmers
         Functions = set()
@@ -77,7 +92,7 @@ class kb_plant_rast:
         Hit_Proteins=dict()
         Hit_Kmers=set()
         output['short']=0
-        for ftr in plant_genome['data']['features']:
+        for ftr in features:
             if('protein_translation' not in ftr):
                 output['short']+=1
                 continue
@@ -153,22 +168,35 @@ class kb_plant_rast:
         output['hit_ftrs']=len(Hit_Proteins)
         output['hit_fns']=len(Hit_Functions)
 
+        #But, if annotating CDS, need to be able to retrieve parent feature
+        parent_feature_index = dict()
+        if(use_cds==1):
+            for i in range(len(plant_genome['data']['features'])):
+                parent_feature_index[plant_genome['data']['features'][i]['id']]=i
+
         #Now, re-populate feature functions, and save genome object
-        for ftr in plant_genome['data']['features']:
+        #But, if annotating CDS, need to be able to retrieve parent feature
+        parent_feature_index = dict()
+        if(use_cds==1):
+            parent_feature_index = dict([(f['id'], i) for i, f in enumerate(plant_genome['data']['features'])])
+#            parent_feature_index = dict([(f['id'], i) for i, f in plant_genome['data']['features']])
+#            for i in range(len(plant_genome['data']['features'])):
+#                parent_feature_index[plant_genome['data']['features'][i]['id']]=i
+
+        for ftr in features:
             if(ftr['id'] in Hit_Proteins):
-                if('function' in ftr):
-                    old_function = ftr['function']
-                ftr['function'] = Hit_Proteins[ftr['id']].keys()[0]
+                new_function = Hit_Proteins[ftr['id']].keys()[0]
+                ftr['function'] = new_function
+                if(use_cds==1):
+                    plant_genome['data']['features'][parent_feature_index[ftr['parent_gene']]]['function']=new_function
         
         if('output_genome' not in input):
             input['output_genome']=input['input_genome']
 
-        workspace_id = self.dfu.ws_name_to_id(input['input_ws'])
-        save_result = self.dfu.save_objects({"id": workspace_id,
-                                             "objects": [{'name' : input['output_genome'],
-                                                          'data' : plant_genome['data'],
-                                                          'type' : "KBaseGenomes.Genome",
-                                                          'meta' : plant_genome['info'][10]}]})
+        save_result = self.gfu.save_one_genome({'workspace' : input['input_ws'],
+                                                'name' : input['output_genome'],
+                                                'data' : plant_genome['data'],
+                                                'upgrade' : 1});
 
         html_string="<html><head><title>KBase Plant Rast Report</title></head><body>"
         html_string+="<p>The Plant Rast app has finished running.</p>"
@@ -185,7 +213,7 @@ class kb_plant_rast:
         html_string+="<p>This result indicates that {0:.2f} of the primary metabolism curated as part ".format(fraction_plantseed)
         html_string+="of the PlantSEED project was detected in the set of features.</p></body>"
 
-        saved_genome = "{}/{}/{}".format(save_result[0][6],save_result[0][0],save_result[0][4])
+        saved_genome = "{}/{}/{}".format(save_result['info'][6],save_result['info'][0],save_result['info'][4])
         description = "Plant genome "+plant_genome['data']['id']+" annotated with metabolic functions"
         uuid_string = str(uuid.uuid4())
         report_params = { 'objects_created' : \

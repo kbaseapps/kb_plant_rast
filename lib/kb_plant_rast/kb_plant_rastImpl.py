@@ -199,19 +199,18 @@ class kb_plant_rast:
                                                 'upgrade' : 1});
 
         html_string="<html><head><title>KBase Plant Rast Report</title></head><body>"
-        html_string+="<p>The Plant Rast app has finished running.</p>"
-        html_string+="<p>"+str(output['ftrs'])+" features were scanned with "+str(output['kmers'])+" signature kmers "
-        html_string+="representing "+str(output['fns'])+" PlantSEED metabolic functions. "
-        html_string+="The app detected "+str(output['hit_kmers'])+" signature kmers representing "
-        html_string+=str(output['hit_fns'])+" functions in "+str(output['hit_ftrs'])+" features.</p>"
-        html_string+="<p>During the annotation process, "+str(output['short'])+" features "
-        html_string+="were ignored because they were too short (<10 AA in length). "
-        html_string+=str(output['few'])+" features were ignored because they were hit by fewer than 2 kmers, and "
-        html_string+=str(output['ambiguous'])+" features were ignored because they were too ambiguous "
-        html_string+="(connected to multiple distinct metabolic functions).</p>"
-        fraction_plantseed = float(output['hit_fns']) / float(output['fns'])
-        html_string+="<p>This result indicates that {0:.2f} of the primary metabolism curated as part ".format(fraction_plantseed)
-        html_string+="of the PlantSEED project was detected in the set of features.</p></body>"
+        html_string+="<p>The Plant Rast app has finished running. "
+        html_string+=str(output['ftrs'])+" protein sequences were scanned for "+str(output['kmers'])+" signature kmers.</p>"
+        html_string+="<p>The app found "+str(output['hit_kmers'])+" signature kmers and was able to predict "
+        html_string+=str(output['hit_fns'])+" enzymatic functions for "+str(output['hit_ftrs'])+" protein sequences.</p>"
+#        html_string+="<p>During the annotation process, "+str(output['short'])+" features "
+#        html_string+="were ignored because they were too short (<10 AA in length). "
+#        html_string+=str(output['few'])+" features were ignored because they were hit by fewer than 2 kmers, and "
+#        html_string+=str(output['ambiguous'])+" features were ignored because they were too ambiguous "
+#        html_string+="(connected to multiple distinct metabolic functions).</p>"
+        fraction_plantseed = float( (float(output['hit_fns']) / float(output['fns'])) * 100.0 )
+        html_string+="<p>This result indicates that, for this set of protein sequences, the app detected {0:.0f}%".format(fraction_plantseed)
+        html_string+=" of the enzymatic functions of plant primary metabolism that were curated as part of the PlantSEED project.</p></body></html>"
 
         saved_genome = "{}/{}/{}".format(save_result['info'][6],save_result['info'][0],save_result['info'][4])
         description = "Plant genome "+plant_genome['data']['id']+" annotated with metabolic functions"

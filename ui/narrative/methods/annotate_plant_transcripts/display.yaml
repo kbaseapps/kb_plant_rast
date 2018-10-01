@@ -52,13 +52,13 @@ description : |
 publications :
     -
         display-text: |
-            Seaver SMD, Gerdes S, Frelin O, Lerma-Ortiz C, Bradbury LMT, Zallot R, et al. High-throughput comparison, functional annotation, and metabolic modeling of plant genomes using the PlantSEED resource. Proc Natl Acad Sci USA. 2014;111: 9645–9650. doi:10.1073/pnas.1401329111
-        link: https://www.ncbi.nlm.nih.gov/pubmed/24927599
+            Seaver SMD, Lerma-Ortiz C, Conrad N, Mikaili A, Sreedasyam A, Hanson AD, et al. PlantSEED enables automated annotation and reconstruction of plant primary metabolism with improved compartmentalization and comparative consistency. Plant J. 2018;95: 1102–1113. doi:10.1111/tpj.14003
+        link: https://www.ncbi.nlm.nih.gov/pubmed/29924895
 
     -
         display-text: |
-            Seaver SMD, Lerma-Ortiz C, Conrad N, Mikaili A, Sreedasyam A, Hanson AD, et al. PlantSEED enables automated annotation and reconstruction of plant primary metabolism with improved compartmentalization and comparative consistency. Plant J. 2018;95: 1102–1113. doi:10.1111/tpj.14003
-        link: https://www.ncbi.nlm.nih.gov/pubmed/29924895
+            Seaver SMD, Gerdes S, Frelin O, Lerma-Ortiz C, Bradbury LMT, Zallot R, et al. High-throughput comparison, functional annotation, and metabolic modeling of plant genomes using the PlantSEED resource. Proc Natl Acad Sci USA. 2014;111: 9645–9650. doi:10.1073/pnas.1401329111
+        link: https://www.ncbi.nlm.nih.gov/pubmed/24927599
 
     -
         display-text: |

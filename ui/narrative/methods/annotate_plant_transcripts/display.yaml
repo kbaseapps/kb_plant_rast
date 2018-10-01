@@ -31,7 +31,7 @@ suggestions:
 parameters :
     input_genome :
         ui-name : |
-            Genome 
+            Genome
         short-hint : |
             Selected genome to annotate
         long-hint  : |
@@ -39,20 +39,28 @@ parameters :
 
     output_genome :
         ui-name : |
-            Genome 
+            Genome
         short-hint : |
             Annotated genome
         long-hint  : |
             The resulting genome that was annotated with metabolic functions
 
 description : |
-    
+
     <p> This is the PlantSEED v2 Annotation App</p>
-    
+
 publications :
+    -
+        display-text: |
+            Seaver SMD, Gerdes S, Frelin O, Lerma-Ortiz C, Bradbury LMT, Zallot R, et al. High-throughput comparison, functional annotation, and metabolic modeling of plant genomes using the PlantSEED resource. Proc Natl Acad Sci USA. 2014;111: 9645–9650. doi:10.1073/pnas.1401329111
+        link: https://www.ncbi.nlm.nih.gov/pubmed/24927599
 
     -
         display-text: |
-     
-           link: https://github.com/ModelSEED/PlantSEED/
-    
+            Seaver SMD, Lerma-Ortiz C, Conrad N, Mikaili A, Sreedasyam A, Hanson AD, et al. PlantSEED enables automated annotation and reconstruction of plant primary metabolism with improved compartmentalization and comparative consistency. Plant J. 2018;95: 1102–1113. doi:10.1111/tpj.14003
+        link: https://www.ncbi.nlm.nih.gov/pubmed/29924895
+
+    -
+        display-text: |
+            GitHub source:
+        link: https://github.com/ModelSEED/PlantSEED/

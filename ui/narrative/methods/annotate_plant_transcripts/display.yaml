@@ -4,7 +4,7 @@
 name: Annotate Plant Transcripts with Metabolic Functions
 
 tooltip: |
-    Annotating transcripts with metabolic functions
+    Annotate plant transcripts with metabolic functions.
 
 screenshots: []
 
@@ -33,32 +33,17 @@ parameters :
         ui-name : |
             Genome
         short-hint : |
-            Selected genome to annotate
-        long-hint  : |
-            Selected genome to annotate with metabolic functions
+            Select the Genome to annotate with metabolic functions.
 
     output_genome :
         ui-name : |
             Genome
         short-hint : |
-            Annotated genome
-        long-hint  : |
-            The resulting genome that was annotated with metabolic functions
+            The resulting Genome that was annotated with metabolic functions using the RAST algorithm.
 
 description : |
 
-    <p>This app is released in conjunction with PlantSEED v2 (see
-    publications). It integrates the set of signature k-mers that were
-    trained as part of the PlantSEED v2 project, wherein every k-mer
-    is unique, and associated with a single metabolic function. The
-    app will scan the protein sequences for hits and assign the
-    function accordingly. The annotations are linked to biochemical
-    reactions, and researchers may use the "Build Metabolic Model"
-    app. Please note: we did not integrate protein localization data
-    when training the k-mers and this impacts compartmentalization of
-    GPRs in our metabolic reconstructions. For more reliably
-    compartmentalized GPRs, you may instead annotate your genome using
-    the "Annotate Plant Enzymes with OrthoFinder" app.</p>
+    <p>This App was released in conjunction with PlantSEED v2 (see publications). It takes a Genome object as an input and annotates the protein-coding genes with metabolic functions using the RAST algorithm. It integrates the set of signature k-mers that were trained as part of the PlantSEED v2 project, wherein every k-mer is unique and associated with a single metabolic function. The App will scan the protein sequences for hits and assign the function accordingly. The annotations are linked to biochemical reactions, and researchers may use the <a href=”https://narrative.kbase.us/#catalog/apps/fba_tools/build_plant_metabolic_model/beta”>Reconstruct Plant Metabolism</a> App (currently in beta) to follow up and build a working model of plant primary metabolism. Note: we did not integrate protein localization data when training the k-mers, and this impacts the compartmentalization of gene-protein-reactions (GPRs) in metabolic reconstructions. For more reliably compartmentalized GPRs, you may instead annotate your genome using the <a href=”https://narrative.kbase.us/#catalog/apps/kb_orthofinder/annotate_plant_transcripts/release”>Annotate Plant Enzymes with OrthoFinder</a> App.</p>
 
 publications :
     -

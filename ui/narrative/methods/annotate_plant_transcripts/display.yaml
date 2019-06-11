@@ -47,7 +47,18 @@ parameters :
 
 description : |
 
-    <p> This is the PlantSEED v2 Annotation App</p>
+    <p>This app is released in conjunction with PlantSEED v2 (see
+    publications). It integrates the set of signature k-mers that were
+    trained as part of the PlantSEED v2 project, wherein every k-mer
+    is unique, and associated with a single metabolic function. The
+    app will scan the protein sequences for hits and assign the
+    function accordingly. The annotations are linked to biochemical
+    reactions, and researchers may use the "Build Metabolic Model"
+    app. Please note: we did not integrate protein localization data
+    when training the k-mers and this impacts compartmentalization of
+    GPRs in our metabolic reconstructions. For more reliably
+    compartmentalized GPRs, you may instead annotate your genome using
+    the "Annotate Plant Enzymes with OrthoFinder" app.</p>
 
 publications :
     -
